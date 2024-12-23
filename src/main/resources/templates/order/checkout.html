@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Оформление заказа</title>
+  <link rel="stylesheet" type="text/css" href="/css/checkout.css"/>
+</head>
+<body>
+<div class="container">
+  <h1>Оформление заказа</h1>
+
+  <div th:if="${formError != null}" style="color: red;">
+    <p th:text="${formError}"></p>
+  </div>
+
+  <form th:action="@{/cart/order/submit}" th:object="${order}" method="post" novalidate>
+    <label>ФИО:</label>
+    <input type="text" th:field="*{fullName}" required pattern="^[А-Яа-яЁё\s]+$" title="Введите имя на кириллице" />
+    <div class="error" th:if="${#fields.hasErrors('fullName')}" style="color: red;">
+      <span th:errors="*{fullName}">Ошибка</span>
+    </div>
+
+    <label>Электронная почта:</label>
+    <input type="email" th:field="*{email}" required />
+    <div class="error" th:if="${#fields.hasErrors('email')}" style="color: red;">
+      <span th:errors="*{email}">Ошибка</span>
+    </div>
+
+    <label>Телефон:</label>
+    <input type="tel" th:field="*{phone}" required pattern="^\d{11}$" title="Введите 11 цифр" />
+    <div class="error" th:if="${#fields.hasErrors('phone')}" style="color: red;">
+      <span th:errors="*{phone}">Ошибка</span>
+    </div>
+
+    <label>Адрес доставки:</label>
+    <textarea th:field="*{address}" required></textarea>
+    <div class="error" th:if="${#fields.hasErrors('address')}" style="color: red;">
+      <span th:errors="*{address}">Ошибка</span>
+    </div>
+
+    <button type="submit">Оформить заказ</button>
+  </form>
+</div>
+</body>
+</html>

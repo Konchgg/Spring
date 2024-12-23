@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${knife.id != null ? 'Редактировать Нож' : 'Создать Новый Нож'}"></title>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${knife.id != null ? 'Редактировать Нож' : 'Создать Новый Нож'}"></h1>
+    <form th:action="@{${knife.id != null ? '/knives/update/' + knife.id : '/knives'}}" th:object="${knife}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <label>Название:</label>
+        <input type="text" th:field="*{name}" required/>
+        <label>Цена:</label>
+        <input type="number" th:field="*{price}" step="0.01" required/>
+        <label>Количество:</label>
+        <input type="number" th:field="*{quantity}" required/>
+        <label>Производитель:</label>
+        <select th:field="*{manufacturer.id}" required>
+            <option value="" disabled selected>Выберите производителя</option>
+            <option th:each="manufacturer : ${manufacturers}"
+                    th:value="${manufacturer.id}"
+                    th:text="${manufacturer.name}"></option>
+        </select>
+        <label>Категория:</label>
+        <select th:field="*{category.id}" required>
+            <option value="" disabled selected>Выберите категорию</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"></option>
+        </select>
+        <label>Описание:</label>
+        <textarea th:field="*{description}"></textarea>
+        <label>Дата производства:</label>
+        <input type="date" th:field="*{manufactureDate}" required/>
+        <button type="submit">Сохранить</button>
+    </form>
+    <a href="/knives" class="btn">Назад</a>
+</div>
+</body>
+</html>

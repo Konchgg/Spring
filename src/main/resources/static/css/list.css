@@ -1,0 +1,138 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 500px;
+    box-sizing: border-box;
+    text-align: center;
+    overflow-x: auto;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    word-break: break-word;
+}
+
+.info-block {
+    background-color: #e9f5ff;
+    border: 1px solid #b3daff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 100%; /* Полная ширина блока */
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-wrap: break-word; /* Позволяет перенос текста */
+    overflow-y: auto; /* Добавляет прокрутку по вертикали при переполнении */
+    box-sizing: border-box;
+}
+
+.table-wrapper {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 100%; /* Гибкость ширины табличного блока */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 16px; /* Увеличено для большего пространства между строками */
+    text-align: center;
+    font-size: 18px;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tr {
+    line-height: 1.8; /* Увеличивает расстояние между строками */
+}
+
+.action-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding: 0 8px;
+    width: max-content;
+    white-space: nowrap;
+}
+
+.btn-action {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    min-width: 100px;
+}
+
+.btn-action:hover {
+    background-color: #0056b3;
+}
+
+.btn {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.btn:hover {
+    background-color: #218838;
+}
+
+/* Медиазапросы для адаптивности */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    .btn, .btn-action {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    th, td {
+        padding: 12px; /* Уменьшение отступа на мобильных устройствах */
+        font-size: 16px;
+    }
+    .info-block {
+        padding: 10px; /* Уменьшение отступа для меньших экранов */
+    }
+}

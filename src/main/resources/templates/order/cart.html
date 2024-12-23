@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Корзина</title>
+    <link rel="stylesheet" type="text/css" href="/css/cart.css"/>
+</head>
+<body>
+<div class="container">
+    <h1>Корзина</h1>
+
+    <div th:if="${session['stockError'] != null}" style="color: red;">
+        <p th:text="${session['stockError']}"></p>
+    </div>
+
+    <div th:if="${cart.items.empty}">
+        <p>Ваша корзина пуста. Вернитесь к <a href="/knives">списку ножей</a>.</p>
+    </div>
+
+    <div th:unless="${cart.items.empty}">
+        <table>
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Цена за единицу</th>
+                <th>Количество</th>
+                <th>Итоговая стоимость</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cart.items.values()}">
+                <td th:text="${item.knife != null ? item.knife.name : 'Нож отсутствует'}"></td>
+                <td th:text="${item.knife != null ? item.knife.price : 0}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.getTotalPrice()}"></td>
+                <td>
+                    <form th:action="@{/cart/remove/{knifeId}(knifeId=${item.knife.id})}" method="post">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3>Итоговая сумма: <span th:text="${cart.total}">0</span></h3>
+
+        <!-- Кнопка оформления заказа -->
+        <form th:action="@{/cart/checkout}" method="get">
+            <button type="submit">Оформить заказ</button>
+        </form>
+    </div>
+
+    <a href="/knives" class="btn">Вернуться к ножам</a>
+</div>
+</body>
+</html>

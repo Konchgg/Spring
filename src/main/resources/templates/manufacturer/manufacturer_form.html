@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${manufacturer.id != null ? 'Редактировать Производителя' : 'Добавить Производителя'}"></title>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${manufacturer.id != null ? 'Редактировать Производителя' : 'Добавить Производителя'}"></h1>
+    <form th:action="@{${manufacturer.id != null ? '/manufacturers/edit/' + manufacturer.id : '/manufacturers/create'}}" th:object="${manufacturer}" method="post">
+        <label>Название:</label>
+        <input type="text" th:field="*{name}" required/>
+
+        <button type="submit">Сохранить</button>
+    </form>
+    <a href="/manufacturers" class="btn">Назад</a>
+</div>
+</body>
+</html>

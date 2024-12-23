@@ -1,0 +1,58 @@
+html, body {
+    height: 100%; /* Устанавливаем высоту для body */
+    margin: 0; /* Убираем отступы */
+    display: flex; /* Используем flexbox для центрирования */
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+    background-color: #f7f7f7; /* Цвет фона */
+    font-family: Arial, sans-serif; /* Добавлен шрифт по умолчанию */
+}
+
+.container {
+    width: 80%;
+    max-width: 700px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Увеличенная тень для глубины */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 450px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px; /* Размер шрифта заголовка */
+    margin-bottom: 20px; /* Отступ снизу для заголовка */
+}
+
+.details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.details p {
+    text-align: left;
+    margin: 8px 0;
+    font-size: 18px; /* Увеличенный размер шрифта для текста */
+    color: #333; /* Цвет текста */
+}
+
+.btn {
+    background-color: #007bff; /* Цвет кнопки */
+    color: white; /* Цвет текста кнопки */
+    padding: 12px 25px; /* Увеличенные отступы для кнопки */
+    border: none; /* Убрать границы */
+    border-radius: 5px; /* Скругление углов */
+    cursor: pointer; /* Указатель при наведении */
+    text-align: center; /* Центрировать текст */
+    text-decoration: none; /* Убрать подчеркивание */
+    font-size: 16px; /* Размер шрифта кнопки */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Темнее при наведении */
+}
