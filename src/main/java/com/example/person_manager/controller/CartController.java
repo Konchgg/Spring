@@ -1,10 +1,11 @@
 package com.example.person_manager.controller;
 
 import com.example.person_manager.model.Cart;
+import com.example.person_manager.model.CartItem;
 import com.example.person_manager.model.Knife;
 import com.example.person_manager.model.Order;
-import com.example.person_manager.model.CartItem;
 import com.example.person_manager.service.KnifeService;
+import com.example.person_manager.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final KnifeService knifeService;
+    private final OrderService orderService;
 
     @Autowired
-    public CartController(KnifeService knifeService) {
+    public CartController(KnifeService knifeService, OrderService orderService) {
         this.knifeService = knifeService;
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -36,7 +39,7 @@ public class CartController {
     }
 
     @PostMapping("/add/{knifeId}")
-    public String addItemToCart(@PathVariable Long knifeId, @RequestParam int quantity, HttpSession session, Model model) {
+    public String addItemToCart(@PathVariable Long knifeId, @RequestParam int quantity, HttpSession session) {
         Knife knife = knifeService.findById(knifeId);
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {
@@ -55,7 +58,6 @@ public class CartController {
                 session.setAttribute("stockError", errorMessage);
             }
         } else {
-            // Обработка случая, когда нож не найден
             String errorMessage = "Нож с идентификатором " + knifeId + " не найден.";
             session.setAttribute("stockError", errorMessage);
         }
@@ -73,7 +75,7 @@ public class CartController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(Model model) {
+    public String checkout(Model model, HttpSession session) {
         model.addAttribute("order", new Order());
         return "order/checkout";
     }
@@ -86,24 +88,18 @@ public class CartController {
         }
 
         if (bindingResult.hasErrors()) {
-            // Если есть ошибки валидации, показываем форму снова
             model.addAttribute("formError", "Пожалуйста, исправьте ошибки в форме.");
             return "order/checkout";
         }
 
-        boolean stockAvailable = true;
-        for (CartItem item : cart.getItems().values()) {
-            Knife knife = item.getKnife();
-            if (item.getQuantity() > knife.getQuantity()) {
-                stockAvailable = false;
-                break;
-            }
-        }
+        boolean stockAvailable = checkStockAvailability(cart);
 
         if (stockAvailable) {
-            for (CartItem item : cart.getItems().values()) {
-                knifeService.updateKnifeQuantity(item.getKnife().getId(), -item.getQuantity());
-            }
+            updateStockLevels(cart);
+
+            order.setItems(cart.getItems());
+            orderService.saveOrder(order);
+
             session.removeAttribute("cart");
             return "redirect:/cart/order/success";
         } else {
@@ -113,7 +109,23 @@ public class CartController {
     }
 
     @GetMapping("/order/success")
-    public String orderSuccess() {
+    public String orderSuccess(Model model) {
         return "order/order_success";
+    }
+
+    private boolean checkStockAvailability(Cart cart) {
+        for (CartItem item : cart.getItems().values()) {
+            Knife knife = item.getKnife();
+            if (item.getQuantity() > knife.getQuantity()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updateStockLevels(Cart cart) {
+        for (CartItem item : cart.getItems().values()) {
+            knifeService.updateKnifeQuantity(item.getKnife().getId(), -item.getQuantity());
+        }
     }
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Orders List</title>
+</head>
+<body>
+<div class="container">
+    <h1>Orders List</h1>
+    <div th:if="${orders.isEmpty()}" style="color: red;">
+        <p>No orders available.</p>
+    </div>
+    <div th:unless="${orders.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Адрес</th>
+                <th>Knives Ordered</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.fullName}"></td>
+                <td th:text="${order.email}"></td>
+                <td th:text="${order.phone}"></td>
+                <td th:text="${order.address}"></td>
+                <td>
+                    <ul>
+                        <li th:each="item : ${order.items.values()}">
+                            <span th:text="${item.knife.name}"></span>
+                            - Количество: <span th:text="${item.quantity}"></span>
+                            - Цена: <span th:text="${item.knife.price}"></span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <form th:action="@{/orders/approve/{orderId}(orderId=${order.id})}" method="post" style="display:inline;">
+                        <button type="submit">Одобрить</button>
+                    </form>
+                    <form th:action="@{/orders/delete/{orderId}(orderId=${order.id})}" method="post" style="display:inline;">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <a href="/knives" class="btn">Назад к списку ножей</a>
+</div>
+</body>
+</html>

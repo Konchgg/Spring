@@ -8,15 +8,15 @@
 <div class="container">
     <h1>Корзина</h1>
 
-    <div th:if="${session['stockError'] != null}" style="color: red;">
-        <p th:text="${session['stockError']}"></p>
+    <div th:if="${stockError != null}" style="color: red;">
+        <p th:text="${stockError}"></p>
     </div>
 
-    <div th:if="${cart.items.empty}">
+    <div th:if="${cart.items.isEmpty()}">
         <p>Ваша корзина пуста. Вернитесь к <a href="/knives">списку ножей</a>.</p>
     </div>
 
-    <div th:unless="${cart.items.empty}">
+    <div th:unless="${cart.items.isEmpty()}">
         <table>
             <thead>
             <tr>
@@ -44,7 +44,6 @@
 
         <h3>Итоговая сумма: <span th:text="${cart.total}">0</span></h3>
 
-        <!-- Кнопка оформления заказа -->
         <form th:action="@{/cart/checkout}" method="get">
             <button type="submit">Оформить заказ</button>
         </form>
