@@ -1,5 +1,6 @@
 package com.example.person_manager.model;
 
+import java.math.BigDecimal; // Импортируем BigDecimal
 import java.util.Map;
 
 public class Order {
@@ -58,5 +59,12 @@ public class Order {
 
     public void setItems(Map<Long, CartItem> items) {
         this.items = items;
+    }
+
+    // Метод для расчета общей стоимости заказа
+    public BigDecimal getTotalPrice() {
+        return items.values().stream()
+                .map(item -> item.getKnife().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))) // Умножаем цену на количество
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Суммируем все цены
     }
 }

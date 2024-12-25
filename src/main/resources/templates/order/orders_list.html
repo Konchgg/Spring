@@ -19,6 +19,7 @@
                 <th>Телефон</th>
                 <th>Адрес</th>
                 <th>Knives Ordered</th>
+                <th>Итоговая Сумма</th> <!-- Добавлено -->
                 <th>Actions</th>
             </tr>
             </thead>
@@ -38,6 +39,7 @@
                         </li>
                     </ul>
                 </td>
+                <td th:text="${order.totalPrice}">0.0</td> <!-- Отображает итоговую сумму -->
                 <td>
                     <form th:action="@{/orders/approve/{orderId}(orderId=${order.id})}" method="post" style="display:inline;">
                         <button type="submit">Одобрить</button>

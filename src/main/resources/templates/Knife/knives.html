@@ -7,10 +7,12 @@
 <body>
 <div class="container">
     <h1>Список Ножей</h1>
-    <a href="/manufacturers" class="btn">Производители</a>
-    <a href="/categories" class="btn">Категории</a>
-    <!-- Link to Orders Page -->
-    <a href="/orders" class="btn">Перейти к Заказам</a>
+    <div class="actions">
+        <a href="/manufacturers" class="btn">Производители</a>
+        <a href="/categories" class="btn">Категории</a>
+        <a href="/orders" class="btn">Перейти к Заказам</a>
+        <a href="/reports/knives/pdf" class="btn">Скачать PDF отчет</a> <!-- Исправленный путь -->
+    </div>
 
     <div class="table-wrapper">
         <table>
@@ -29,24 +31,38 @@
                 <td th:text="${knife.name}"></td>
                 <td th:text="${knife.price}"></td>
                 <td th:text="${knife.quantity}"></td>
-                <td><a th:href="@{/manufacturers/edit/{id}(id=${knife.manufacturer.id})}" th:text="${knife.manufacturer.name}"></a></td>
-                <td><a th:href="@{/categories/edit/{id}(id=${knife.category.id})}" th:text="${knife.category.name}"></a></td>
+                <td>
+                    <a th:href="@{/manufacturers/edit/{id}(id=${knife.manufacturer.id})}"
+                       th:text="${knife.manufacturer.name}"></a>
+                </td>
+                <td>
+                    <a th:href="@{/categories/edit/{id}(id=${knife.category.id})}"
+                       th:text="${knife.category.name}"></a>
+                </td>
                 <td class="action-column">
+                    <!-- Добавить в корзину -->
                     <form th:action="@{/cart/add/{knifeId}(knifeId=${knife.id})}" method="post">
-                        <input type="range" name="quantity" min="1" th:max="${knife.quantity}" value="1" oninput="this.nextElementSibling.value = this.value" required/>
-                        <output>1</output> <!-- Отображает текущее значение ползунка -->
+                        <input type="range" name="quantity" min="1" th:max="${knife.quantity}"
+                               value="1" oninput="this.nextElementSibling.value = this.value" required/>
+                        <output>1</output>
                         <button type="submit">Добавить в корзину</button>
                     </form>
+                    <!-- Действия с ножом -->
                     <a th:href="@{/knives/edit/{id}(id=${knife.id})}" class="btn-action">Редактировать</a>
-                    <a th:href="@{/knives/delete/{id}(id=${knife.id})}" onclick="return confirm('Вы уверены, что хотите удалить?')" class="btn-action">Удалить</a>
+                    <a th:href="@{/knives/delete/{id}(id=${knife.id})}"
+                       onclick="return confirm('Вы уверены, что хотите удалить?')"
+                       class="btn-action">Удалить</a>
                     <a th:href="@{/knives/details/{id}(id=${knife.id})}" class="btn-action">Детали</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <a href="/cart" class="btn">Перейти в корзину</a>
-    <a href="/knives/create" class="btn">Добавить Нож</a>
+
+    <div class="additional-actions">
+        <a href="/cart" class="btn">Перейти в корзину</a>
+        <a href="/knives/create" class="btn">Добавить Нож</a>
+    </div>
 </div>
 </body>
 </html>
