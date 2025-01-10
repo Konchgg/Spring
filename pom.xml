@@ -66,6 +66,7 @@
 			<artifactId>spring-expression</artifactId>
 			<version>6.1.13</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext7-core</artifactId>
@@ -115,6 +116,8 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>8.0.1.Final</version>
 		</dependency>
+
+
 	</dependencies>
 
 

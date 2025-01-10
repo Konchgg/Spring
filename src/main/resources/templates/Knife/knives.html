@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список Ножей</title>
     <link rel="stylesheet" type="text/css" href="/css/list.css"/>
 </head>
 <body>
 <div class="container">
     <h1>Список Ножей</h1>
+
+    <form method="get" action="/knives" class="filter-form">
+        <select name="categoryId" class="filter-select">
+            <option value="">Все категории</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"
+                    th:selected="${currentCategoryId == category.id}"></option>
+        </select>
+        <input type="text" name="search" class="filter-input" placeholder="Поиск по названию" th:value="${searchTerm}" />
+        <button type="submit" class="filter-button">Применить</button>
+    </form>
+
     <div class="actions">
         <a href="/manufacturers" class="btn">Производители</a>
         <a href="/categories" class="btn">Категории</a>
         <a href="/orders" class="btn">Перейти к Заказам</a>
-        <a href="/reports/knives/pdf" class="btn">Скачать PDF отчет</a> <!-- Исправленный путь -->
+        <a href="/reports/knives/pdf" class="btn">Скачать PDF отчет</a>
     </div>
 
     <div class="table-wrapper">
@@ -40,14 +55,12 @@
                        th:text="${knife.category.name}"></a>
                 </td>
                 <td class="action-column">
-                    <!-- Добавить в корзину -->
-                    <form th:action="@{/cart/add/{knifeId}(knifeId=${knife.id})}" method="post">
-                        <input type="range" name="quantity" min="1" th:max="${knife.quantity}"
-                               value="1" oninput="this.nextElementSibling.value = this.value" required/>
+                    <form th:action="@{/cart/add/{knifeId}(knifeId=${knife.id})}" method="post" class="quantity-form">
+                        <input type="range" name="quantity" min="1" th:max="${knife.quantity}" value="1" required
+                               class="quantity-range" oninput="this.nextElementSibling.value = this.value"/>
                         <output>1</output>
-                        <button type="submit">Добавить в корзину</button>
+                        <button type="submit" class="btn-action">Добавить в корзину</button>
                     </form>
-                    <!-- Действия с ножом -->
                     <a th:href="@{/knives/edit/{id}(id=${knife.id})}" class="btn-action">Редактировать</a>
                     <a th:href="@{/knives/delete/{id}(id=${knife.id})}"
                        onclick="return confirm('Вы уверены, что хотите удалить?')"

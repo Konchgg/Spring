@@ -33,7 +33,6 @@ CREATE TABLE reviews (
     created_at TIMESTAMP NOT NULL
 );
 
-
 -- Вставка данных
 INSERT INTO manufacturers (name) VALUES ('Cold Steel'), ('Spyderco'), ('Buck Knives');
 INSERT INTO categories (name) VALUES ('Тактические'), ('Спортивные'), ('Охотничьи');

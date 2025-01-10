@@ -44,7 +44,7 @@ public class OrderController {
 
     @PostMapping("/delete/{orderId}")
     public String deleteOrder(@PathVariable Long orderId) {
-        // Удаление заказа
+        // Удаление заказа и возврат ножей в инвентарь
         orderService.deleteOrder(orderId);
         return "redirect:/orders";
     }

@@ -86,4 +86,17 @@ public class KnifeServiceImpl implements KnifeService {
     public List<Knife> findKnivesByCategoryId(Long categoryId) {
         return knifeRepository.findByCategoryId(categoryId);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Knife> findKnivesByName(String name) {
+        return knifeRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Knife> findKnivesByCategoryIdAndName(Long categoryId, String name) {
+        return knifeRepository.findByCategoryIdAndName(categoryId, name);
+    }
 }
+

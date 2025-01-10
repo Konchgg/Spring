@@ -1,48 +1,73 @@
 html, body {
     height: 100%;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
 
 .container {
     width: 90%;
-    max-width: 1000px;
+    max-width: 1200px;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 500px;
-    box-sizing: border-box;
-    text-align: center;
-    overflow-x: auto;
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     margin-bottom: 20px;
-    word-break: break-word;
 }
 
-.info-block {
-    background-color: #e9f5ff;
-    border: 1px solid #b3daff;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+.filter-form {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    max-width: 100%; /* Полная ширина блока */
+    margin-bottom: 20px;
+}
+
+.filter-select, .filter-input, .filter-button {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.filter-button {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background-color: #218838;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.btn, .btn-action {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow-wrap: break-word; /* Позволяет перенос текста */
-    overflow-y: auto; /* Добавляет прокрутку по вертикали при переполнении */
-    box-sizing: border-box;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover, .btn-action:hover {
+    background-color: #0056b3;
 }
 
 .table-wrapper {
@@ -50,8 +75,6 @@ h1 {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    max-width: 100%; /* Гибкость ширины табличного блока */
 }
 
 table {
@@ -61,7 +84,7 @@ table {
 
 th, td {
     border: 1px solid #ddd;
-    padding: 16px; /* Увеличено для большего пространства между строками */
+    padding: 16px;
     text-align: center;
     font-size: 18px;
 }
@@ -71,68 +94,33 @@ th {
     font-weight: bold;
 }
 
-tr {
-    line-height: 1.8; /* Увеличивает расстояние между строками */
-}
-
 .action-column {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 20px;
-    padding: 0 8px;
-    width: max-content;
-    white-space: nowrap;
+    align-items: center;
 }
 
-.btn-action {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    cursor: pointer;
-    display: inline-block;
-    min-width: 100px;
+.quantity-form {
+    display: flex;
+    align-items: center;
 }
 
-.btn-action:hover {
-    background-color: #0056b3;
-}
-
-.btn {
-    background-color: #28a745;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-.btn:hover {
-    background-color: #218838;
+.quantity-range {
+    margin-right: 5px;
 }
 
 /* Медиазапросы для адаптивности */
 @media (max-width: 600px) {
     h1 {
-        font-size: 1.5em;
+        font-size: 1.8em;
     }
     .btn, .btn-action {
         padding: 8px 12px;
         font-size: 14px;
     }
     th, td {
-        padding: 12px; /* Уменьшение отступа на мобильных устройствах */
+        padding: 12px;
         font-size: 16px;
-    }
-    .info-block {
-        padding: 10px; /* Уменьшение отступа для меньших экранов */
     }
 }

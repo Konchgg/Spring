@@ -30,9 +30,25 @@ public class KnifeController {
     }
 
     @GetMapping
-    public String showKnives(Model model) {
-        List<Knife> knives = knifeService.getAllKnives();
+    public String showKnives(@RequestParam(required = false) Long categoryId,
+                             @RequestParam(required = false) String search,
+                             Model model) {
+        List<Knife> knives;
+
+        if (categoryId != null && search != null && !search.isEmpty()) {
+            knives = knifeService.findKnivesByCategoryIdAndName(categoryId, search);
+        } else if (categoryId != null) {
+            knives = knifeService.findKnivesByCategoryId(categoryId);
+        } else if (search != null && !search.isEmpty()) {
+            knives = knifeService.findKnivesByName(search);
+        } else {
+            knives = knifeService.getAllKnives();
+        }
+
         model.addAttribute("knives", knives);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("currentCategoryId", categoryId);
+        model.addAttribute("searchTerm", search);
         return "Knife/knives";
     }
 
