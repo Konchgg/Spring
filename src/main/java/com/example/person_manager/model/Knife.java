@@ -7,39 +7,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "knives")
+@Table(name = "knives") // Указание имени таблицы в базе данных
 public class Knife {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Автоматическая генерация ID
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // Поле имени ножа, не может быть пустым
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // Поле цены ножа, не может быть пустым
     private BigDecimal price;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // Поле количества ножей, не может быть пустым
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "manufacturer_id", nullable = false)
+    @JoinColumn(name = "manufacturer_id", nullable = false) // Внешний ключ на производителя
     private Manufacturer manufacturer;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false) // Внешний ключ на категорию
     private Category category;
 
-    private String description;
+    private String description; // Описание ножа
 
-    @Column(name = "manufacture_date")
+    @Column(name = "manufacture_date") // Дата производства ножа
     private LocalDate manufactureDate;
 
-    // изменено: добавление orphanRemoval и CascadeType.ALL
+    // Связь один ко многим с сущностью Review с каскадированием и удалением сирот
     @OneToMany(mappedBy = "knife", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-    // Getters и Setters
+    // Геттеры и сеттеры для доступа к полям
 
     public Long getId() {
         return id;
@@ -117,11 +118,13 @@ public class Knife {
         reviews.forEach(this::addReview);
     }
 
+    // Добавление рецензии к ножу
     public void addReview(Review review) {
         reviews.add(review);
         review.setKnife(this);
     }
 
+    // Удаление рецензии
     public void removeReview(Review review) {
         reviews.remove(review);
         review.setKnife(null);

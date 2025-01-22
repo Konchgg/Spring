@@ -4,26 +4,28 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "reviews") // Указание имени таблицы отзывов в базе данных
 public class Review {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Автоматическая генерация ID
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "knife_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) // Связь многие к одному с сущностью Knife
+    @JoinColumn(name = "knife_id", nullable = false) // Внешний ключ на нож
     private Knife knife;
 
-    @Column(name = "review_text", nullable = false)
+    @Column(name = "review_text", nullable = false) // Текст отзыва, обязательное поле
     private String reviewText;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at", nullable = false) // Дата создания отзыва, обязательное поле
+    private LocalDateTime createdAt = LocalDateTime.now(); // Инициализация текущей датой и временем
 
     // Конструктор по умолчанию
     public Review() {}
 
-    // Getters и Setters
+    // Геттеры и сеттеры для доступа к полям
+
     public Long getId() {
         return id;
     }

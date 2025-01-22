@@ -4,23 +4,23 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "manufacturers")
+@Table(name = "manufacturers") // Указание имени таблицы производителей в базе данных
 public class Manufacturer {
 
-    @Id // Используйте аннотацию Id из jakarta.persistence
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Аннотация для первичного ключа
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Автоматическая генерация ID
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false) // Поле имени производителя, должно быть уникальным и не null
     private String name;
 
-    @Column(nullable = true)
+    @Column(nullable = true) // Поле для страны производителя, может быть пустым
     private String country;
 
-    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Knife> knives;
+    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Связь один ко многим с каскадированием
+    private List<Knife> knives; // Список ножей, производимых этим производителем
 
-    // Getters и Setters
+    // Геттеры и сеттеры для доступа к полям
 
     public Long getId() {
         return id;

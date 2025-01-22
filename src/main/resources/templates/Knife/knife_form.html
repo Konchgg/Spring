@@ -1,41 +1,79 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title th:text="${knife.id != null ? 'Редактировать Нож' : 'Создать Новый Нож'}"></title>
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
     <link rel="stylesheet" type="text/css" href="/css/list.css"/>
+
 </head>
 <body>
+<!-- Меню -->
+<div th:replace="fragments/header :: nav"></div>
+
 <div class="container">
     <h1 th:text="${knife.id != null ? 'Редактировать Нож' : 'Создать Новый Нож'}"></h1>
-    <form th:action="@{${knife.id != null ? '/knives/update/' + knife.id : '/knives'}}" th:object="${knife}" method="post">
+
+    <!-- Форма создания/редактирования ножа -->
+    <form th:action="@{${knife.id != null ? '/knives/update/' + knife.id : '/knives'}}"
+          th:object="${knife}"
+          method="post"
+          class="form-container">
+
         <input type="hidden" th:field="*{id}"/>
-        <label>Название:</label>
-        <input type="text" th:field="*{name}" required/>
-        <label>Цена:</label>
-        <input type="number" th:field="*{price}" step="0.01" required/>
-        <label>Количество:</label>
-        <input type="number" th:field="*{quantity}" required/>
-        <label>Производитель:</label>
-        <select th:field="*{manufacturer.id}" required>
-            <option value="" disabled selected>Выберите производителя</option>
-            <option th:each="manufacturer : ${manufacturers}"
-                    th:value="${manufacturer.id}"
-                    th:text="${manufacturer.name}"></option>
-        </select>
-        <label>Категория:</label>
-        <select th:field="*{category.id}" required>
-            <option value="" disabled selected>Выберите категорию</option>
-            <option th:each="category : ${categories}"
-                    th:value="${category.id}"
-                    th:text="${category.name}"></option>
-        </select>
-        <label>Описание:</label>
-        <textarea th:field="*{description}"></textarea>
-        <label>Дата производства:</label>
-        <input type="date" th:field="*{manufactureDate}" required/>
-        <button type="submit">Сохранить</button>
+
+        <div class="form-group">
+            <label>Название:</label>
+            <input type="text" th:field="*{name}" required/>
+        </div>
+
+        <div class="form-group">
+            <label>Цена:</label>
+            <input type="number" th:field="*{price}" step="0.01" required/>
+        </div>
+
+        <div class="form-group">
+            <label>Количество:</label>
+            <input type="number" th:field="*{quantity}" required/>
+        </div>
+
+        <div class="form-group">
+            <label>Производитель:</label>
+            <select th:field="*{manufacturer.id}" required>
+                <option value="" disabled selected>Выберите производителя</option>
+                <option th:each="manufacturer : ${manufacturers}"
+                        th:value="${manufacturer.id}"
+                        th:text="${manufacturer.name}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Категория:</label>
+            <select th:field="*{category.id}" required>
+                <option value="" disabled selected>Выберите категорию</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Описание:</label>
+            <textarea th:field="*{description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Дата производства:</label>
+            <input type="date" th:field="*{manufactureDate}" required/>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Сохранить</button>
+            <a href="/knives" class="btn">Назад</a>
+        </div>
     </form>
-    <a href="/knives" class="btn">Назад</a>
 </div>
 </body>
 </html>

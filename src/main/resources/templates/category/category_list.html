@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Список Категорий</title>
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
 </head>
 <body>
+<div th:replace="fragments/header :: nav"></div>
+
 <div class="container">
     <h1>Категории</h1>
-    <a href="/categories/create" class="btn">Добавить Категорию</a>
-    <table>
+
+    <div class="additional-actions">
+        <a href="/categories/create" class="btn">Добавить Категорию</a>
+    </div>
+
+    <table class="styled-table">
         <thead>
         <tr>
             <th>Название</th>
@@ -16,11 +25,13 @@
         </thead>
         <tbody>
         <tr th:each="category : ${categories}">
-            <td th:text="${category.name}"></td>
-            <td>
-                <a th:href="@{/categories/edit/{id}(id=${category.id})}">Редактировать</a>
-                <a th:href="@{/categories/delete/{id}(id=${category.id})}" onclick="return confirm('Вы уверены?')">Удалить</a>
-                <a th:href="@{/knives?categoryId={id}(id=${category.id})}">Посмотреть ножи</a> <!-- Новая кнопка -->
+            <td th:text="${category.name}">Категория</td>
+            <td class="action-column">
+                <a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn-action">Редактировать</a>
+                <a th:href="@{/categories/delete/{id}(id=${category.id})}"
+                   onclick="return confirm('Вы уверены?')"
+                   class="btn-action">Удалить</a>
+                <a th:href="@{/knives?categoryId={id}(id=${category.id})}" class="btn-action">Посмотреть ножи</a>
             </td>
         </tr>
         </tbody>

@@ -1,17 +1,24 @@
 package com.example.person_manager.model;
 
-import java.math.BigDecimal; // Импортируем BigDecimal
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class Order {
     private Long id;
-    private String fullName;
-    private String email;
-    private String phone;
-    private String address;
-    private Map<Long, CartItem> items; // Map to store items by their knife ID
+    private String fullName; // Полное имя заказчика
+    private String email; // Электронная почта заказчика
+    private String phone; // Телефон заказчика
+    private String address; // Адрес доставки
+    private Map<Long, CartItem> items; // Карта для хранения товаров по ID ножа
+    private String status; // Статус заказа
 
-    // Default Constructor, Getters и Setters
+    // Конструктор по умолчанию
+    public Order() {
+        // При создании заказа статус по умолчанию "Ожидание"
+        this.status = "Ожидание";
+    }
+
+    // Геттеры и сеттеры для доступа к полям
 
     public Long getId() {
         return id;
@@ -61,10 +68,18 @@ public class Order {
         this.items = items;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     // Метод для расчета общей стоимости заказа
     public BigDecimal getTotalPrice() {
         return items.values().stream()
-                .map(item -> item.getKnife().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))) // Умножаем цену на количество
-                .reduce(BigDecimal.ZERO, BigDecimal::add); // Суммируем все цены
+                .map(item -> item.getKnife().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

@@ -23,29 +23,37 @@ public class OrderController {
         this.emailService = emailService;
     }
 
+    // Просмотр всех заказов
     @GetMapping
     public String viewOrders(Model model) {
         List<Order> orders = orderService.getAllOrders();
         model.addAttribute("orders", orders);
-        return "order/orders_list";
+        return "order/orders_list"; // Возвращаем вид для отображения списка заказов
     }
 
+    // Одобрение заказа
     @PostMapping("/approve/{orderId}")
     public String approveOrder(@PathVariable Long orderId) {
         Order order = orderService.getOrderById(orderId);
         if (order != null) {
+            // Изменение статуса заказа на "Доставляется"
+            order.setStatus("Доставляется");
+
+            // Отправка письма клиенту с уведомлением
             String subject = "Заказ одобрен";
             String message = String.format("Ваш заказ #%d был одобрен и отправлен.", orderId);
             emailService.sendSimpleEmail(order.getEmail(), subject, message);
-            orderService.deleteOrder(orderId);
+
+            // Здесь можно сохранить изменения в базе данных, если нужно
         }
-        return "redirect:/orders";
+        return "redirect:/orders"; // Перенаправление на список заказов
     }
 
+    // Удаление заказа
     @PostMapping("/delete/{orderId}")
     public String deleteOrder(@PathVariable Long orderId) {
-        // Удаление заказа и возврат ножей в инвентарь
+        // Удаление заказа и, возможно, возврат товара в инвентарь
         orderService.deleteOrder(orderId);
-        return "redirect:/orders";
+        return "redirect:/orders"; // Перенаправление на список заказов
     }
 }

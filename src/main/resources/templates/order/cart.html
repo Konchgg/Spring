@@ -1,23 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
+    <meta charset="UTF-8">
     <title>Корзина</title>
-    <link rel="stylesheet" type="text/css" href="/css/cart.css"/>
+    <!-- Подключаем стили, например, list.css -->
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
 </head>
 <body>
+<!-- Навигационная панель -->
+<div th:replace="fragments/header :: nav"></div>
+
 <div class="container">
     <h1>Корзина</h1>
 
-    <div th:if="${stockError != null}" style="color: red;">
+    <!-- Сообщение об ошибке (если не хватает товара на складе) -->
+    <div th:if="${stockError != null}" class="no-items">
         <p th:text="${stockError}"></p>
     </div>
 
-    <div th:if="${cart.items.isEmpty()}">
+    <!-- Пустая корзина -->
+    <div th:if="${cart.items.isEmpty()}" class="no-items">
         <p>Ваша корзина пуста. Вернитесь к <a href="/knives">списку ножей</a>.</p>
     </div>
 
+    <!-- Если корзина не пуста -->
     <div th:unless="${cart.items.isEmpty()}">
-        <table>
+        <table class="styled-table">
             <thead>
             <tr>
                 <th>Название</th>
@@ -29,13 +39,13 @@
             </thead>
             <tbody>
             <tr th:each="item : ${cart.items.values()}">
-                <td th:text="${item.knife != null ? item.knife.name : 'Нож отсутствует'}"></td>
-                <td th:text="${item.knife != null ? item.knife.price : 0}"></td>
-                <td th:text="${item.quantity}"></td>
-                <td th:text="${item.getTotalPrice()}"></td>
+                <td th:text="${item.knife != null ? item.knife.name : 'Нож отсутствует'}">Нож</td>
+                <td th:text="${item.knife != null ? item.knife.price : 0}">0</td>
+                <td th:text="${item.quantity}">0</td>
+                <td th:text="${item.getTotalPrice()}">0</td>
                 <td>
                     <form th:action="@{/cart/remove/{knifeId}(knifeId=${item.knife.id})}" method="post">
-                        <button type="submit">Удалить</button>
+                        <button type="submit" class="btn-action">Удалить</button>
                     </form>
                 </td>
             </tr>
@@ -44,12 +54,16 @@
 
         <h3>Итоговая сумма: <span th:text="${cart.total}">0</span></h3>
 
-        <form th:action="@{/cart/checkout}" method="get">
-            <button type="submit">Оформить заказ</button>
-        </form>
+        <div class="form-actions">
+            <form th:action="@{/cart/checkout}" method="get">
+                <button type="submit" class="btn">Оформить заказ</button>
+            </form>
+        </div>
     </div>
 
-    <a href="/knives" class="btn">Вернуться к ножам</a>
+    <div class="additional-actions">
+        <a href="/knives" class="btn">Вернуться к списку ножей</a>
+    </div>
 </div>
 </body>
 </html>

@@ -36,6 +36,7 @@ public class ReportController {
         this.knifeService = knifeService;
     }
 
+    // Генерация PDF отчета по ножам
     @GetMapping("/knives/pdf")
     public ResponseEntity<byte[]> generateKnivesPdfReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -47,29 +48,30 @@ public class ReportController {
             PdfFont font = PdfFontFactory.createFont("src/main/resources/fonts/Montserrat-VariableFont_wght.ttf", PdfEncodings.IDENTITY_H, true);
             document.setFont(font);
 
-            // Заголовок отчета
+            // Добавляем заголовок отчета
             Paragraph title = new Paragraph("Отчет о ножах").setBold().setFontSize(20).setUnderline();
             title.setTextAlignment(TextAlignment.CENTER);
             document.add(title);
             document.add(new Paragraph(" ").setTextAlignment(TextAlignment.CENTER));
 
-            // Список всех ножей
+            // Получаем список всех ножей
             List<Knife> knives = knifeService.getAllKnives();
             BigDecimal totalCost = BigDecimal.ZERO;
             int totalQuantity = 0;
 
+            // Рассчитываем общие показатели
             for (Knife knife : knives) {
                 totalCost = totalCost.add(knife.getPrice().multiply(BigDecimal.valueOf(knife.getQuantity())));
                 totalQuantity += knife.getQuantity();
             }
 
-            // Общая информация
+            // Отображаем общую информацию
             document.add(new Paragraph("Итоговая информация:").setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER));
             document.add(new Paragraph("Общее количество ножей: " + totalQuantity).setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER));
             document.add(new Paragraph("Общая стоимость всех ножей: " + formatBigDecimal(totalCost)).setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER));
             document.add(new Paragraph(" ").setTextAlignment(TextAlignment.CENTER));
 
-            // Группировка ножей по категориям и производителям
+            // Группируем ножи по категориям и производителям
             Map<String, Map<String, List<Knife>>> groupedKnives = knives.stream()
                     .collect(Collectors.groupingBy(
                             knife -> knife.getCategory() != null ? knife.getCategory().getName() : "Без категории",
@@ -87,9 +89,9 @@ public class ReportController {
                     document.add(new Paragraph("  Производитель: " + manufacturer).setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER));
                     List<Knife> knivesByManufacturer = manufacturers.get(manufacturer);
 
-                    // Проверка, содержит ли список ножей
+                    // Проверяем, есть ли ножи у производителя
                     if (knivesByManufacturer != null && !knivesByManufacturer.isEmpty()) {
-                        // Таблица для ножей
+                        // Создаем таблицу для ножей
                         Table knifeTable = new Table(5); // Изменено на 5 колонок
                         knifeTable.addHeaderCell("Название ножа").setTextAlignment(TextAlignment.CENTER);
                         knifeTable.addHeaderCell("Количество").setTextAlignment(TextAlignment.CENTER);
@@ -97,6 +99,7 @@ public class ReportController {
                         knifeTable.addHeaderCell("Общая стоимость").setTextAlignment(TextAlignment.CENTER);
                         knifeTable.addHeaderCell("Дата производства").setTextAlignment(TextAlignment.CENTER); // Новая колонка
 
+                        // Заполняем таблицу данными о ножах
                         for (Knife knife : knivesByManufacturer) {
                             knifeTable.addCell(knife.getName()).setTextAlignment(TextAlignment.CENTER);
                             knifeTable.addCell(String.valueOf(knife.getQuantity())).setTextAlignment(TextAlignment.CENTER);
@@ -105,7 +108,6 @@ public class ReportController {
                             knifeTable.addCell(knife.getManufactureDate().toString()).setTextAlignment(TextAlignment.CENTER); // Дата производства
                         }
 
-                        // Центрируем таблицу
                         document.add(knifeTable); // Добавляем таблицу в документ
                     } else {
                         document.add(new Paragraph("    Ножи отсутствуют").setItalic().setTextAlignment(TextAlignment.CENTER));
@@ -116,7 +118,7 @@ public class ReportController {
 
             document.close();
 
-            // Возврат PDF-файла как ответа
+            // Отправляем PDF в ответе
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("filename", "knives_report.pdf");
@@ -126,9 +128,9 @@ public class ReportController {
         }
     }
 
-    // Метод для форматирования Decimal в нужный формат
+    // Метод для форматирования BigDecimal
     private String formatBigDecimal(BigDecimal bigDecimal) {
-        DecimalFormat df = new DecimalFormat("#,###.00"); // Добавляем два знака после запятой
+        DecimalFormat df = new DecimalFormat("#,###.00"); // Форматирование с двумя знаками после запятой
         return df.format(bigDecimal);
     }
 }

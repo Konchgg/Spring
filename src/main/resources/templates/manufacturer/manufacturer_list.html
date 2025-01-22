@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Список Производителей</title>
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
 </head>
 <body>
+<div th:replace="fragments/header :: nav"></div>
+
 <div class="container">
     <h1>Производители</h1>
-    <a href="/manufacturers/create" class="btn">Добавить Производителя</a>
-    <table>
+
+    <div class="additional-actions">
+        <a href="/manufacturers/create" class="btn">Добавить Производителя</a>
+    </div>
+
+    <table class="styled-table">
         <thead>
         <tr>
             <th>Название</th>
@@ -16,11 +25,13 @@
         </thead>
         <tbody>
         <tr th:each="manufacturer : ${manufacturers}">
-            <td th:text="${manufacturer.name}"></td>
-            <td>
-                <a th:href="@{/manufacturers/edit/{id}(id=${manufacturer.id})}">Редактировать</a>
-                <a th:href="@{/manufacturers/delete/{id}(id=${manufacturer.id})}" onclick="return confirm('Вы уверены?')">Удалить</a>
-                <a th:href="@{/knives?manufacturerId={id}(id=${manufacturer.id})}">Посмотреть ножи</a> <!-- Новая кнопка -->
+            <td th:text="${manufacturer.name}">Название</td>
+            <td class="action-column">
+                <a th:href="@{/manufacturers/edit/{id}(id=${manufacturer.id})}" class="btn-action">Редактировать</a>
+                <a th:href="@{/manufacturers/delete/{id}(id=${manufacturer.id})}"
+                   onclick="return confirm('Вы уверены?')"
+                   class="btn-action">Удалить</a>
+                <a th:href="@{/knives?manufacturerId={id}(id=${manufacturer.id})}" class="btn-action">Посмотреть ножи</a>
             </td>
         </tr>
         </tbody>

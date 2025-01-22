@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <title>Orders List</title>
+    <meta charset="UTF-8">
+    <title>Список заказов</title>
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
 </head>
 <body>
+<div th:replace="fragments/header :: nav"></div>
 <div class="container">
-    <h1>Orders List</h1>
-    <div th:if="${orders.isEmpty()}" style="color: red;">
-        <p>No orders available.</p>
+    <h1>Список заказов</h1>
+    <div th:if="${orders.isEmpty()}" class="no-items">
+        <p>Нет доступных заказов.</p>
     </div>
     <div th:unless="${orders.isEmpty()}">
-        <table>
+        <table class="styled-table">
             <thead>
             <tr>
                 <th>Order ID</th>
@@ -19,8 +24,9 @@
                 <th>Телефон</th>
                 <th>Адрес</th>
                 <th>Knives Ordered</th>
-                <th>Итоговая Сумма</th> <!-- Добавлено -->
-                <th>Actions</th>
+                <th>Итоговая Сумма</th>
+                <th>Статус</th>
+                <th>Действия</th>
             </tr>
             </thead>
             <tbody>
@@ -39,20 +45,25 @@
                         </li>
                     </ul>
                 </td>
-                <td th:text="${order.totalPrice}">0.0</td> <!-- Отображает итоговую сумму -->
-                <td>
-                    <form th:action="@{/orders/approve/{orderId}(orderId=${order.id})}" method="post" style="display:inline;">
-                        <button type="submit">Одобрить</button>
+                <td th:text="${order.totalPrice}">0.0</td>
+                <td th:text="${order.status}">Ожидание</td>
+                <td class="action-column">
+                    <!-- Кнопка Одобрить отображается, если статус "Ожидание" -->
+                    <form th:if="${order.status == 'Ожидание'}"
+                          th:action="@{/orders/approve/{orderId}(orderId=${order.id})}" method="post">
+                        <button type="submit" class="btn-action" sec:authorize="hasRole('ADMIN')">Одобрить</button>
                     </form>
-                    <form th:action="@{/orders/delete/{orderId}(orderId=${order.id})}" method="post" style="display:inline;">
-                        <button type="submit">Удалить</button>
+                    <form th:action="@{/orders/delete/{orderId}(orderId=${order.id})}" method="post">
+                        <button type="submit" class="btn-action" sec:authorize="hasRole('ADMIN')">Удалить</button>
                     </form>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <a href="/knives" class="btn">Назад к списку ножей</a>
+    <div class="additional-actions">
+        <a href="/knives" class="btn">Назад к списку ножей</a>
+    </div>
 </div>
 </body>
 </html>

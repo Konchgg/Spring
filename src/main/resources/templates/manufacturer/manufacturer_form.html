@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title th:text="${manufacturer.id != null ? 'Редактировать Производителя' : 'Добавить Производителя'}"></title>
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
 </head>
 <body>
+<div th:replace="fragments/header :: nav"></div>
+
 <div class="container">
     <h1 th:text="${manufacturer.id != null ? 'Редактировать Производителя' : 'Добавить Производителя'}"></h1>
-    <form th:action="@{${manufacturer.id != null ? '/manufacturers/edit/' + manufacturer.id : '/manufacturers/create'}}" th:object="${manufacturer}" method="post">
-        <label>Название:</label>
-        <input type="text" th:field="*{name}" required/>
 
-        <button type="submit">Сохранить</button>
+    <form th:action="@{${manufacturer.id != null ? '/manufacturers/edit/' + manufacturer.id : '/manufacturers/create'}}"
+          th:object="${manufacturer}"
+          method="post"
+          class="form-container">
+
+        <div class="form-group">
+            <label>Название:</label>
+            <input type="text" th:field="*{name}" required/>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Сохранить</button>
+            <a href="/manufacturers" class="btn">Назад</a>
+        </div>
     </form>
-    <a href="/manufacturers" class="btn">Назад</a>
 </div>
 </body>
 </html>

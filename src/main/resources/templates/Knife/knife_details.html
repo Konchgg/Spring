@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Детали Ножа</title>
-    <link rel="stylesheet" type="text/css" href="/css/details.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/navbar.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/list.css"/>
 </head>
 <body>
+<div th:replace="fragments/header :: nav"></div>
+
 <div class="container">
     <h1>Детали: <span th:text="${knife.name}">Название ножа</span></h1>
+
     <div class="details">
         <p><strong>Цена:</strong> <span th:text="${knife.price}">0</span></p>
         <p><strong>Количество:</strong> <span th:text="${knife.quantity}">0</span></p>
@@ -15,24 +20,33 @@
         <p><strong>Описание:</strong> <span th:text="${knife.description}">Описание отсутствует</span></p>
         <p><strong>Дата производства:</strong> <span th:text="${knife.manufactureDate}">Неизвестно</span></p>
     </div>
+
+    <!-- Отзывы -->
     <div class="reviews">
         <h2>Отзывы (Всего: <span th:text="${reviews.size()}">0</span>)</h2>
         <ul>
             <li th:each="review : ${reviews}">
                 <p th:text="${review.reviewText}">Текст отзыва</p>
                 <form th:action="@{/knives/details/{knifeId}/reviews/delete/{reviewId}(knifeId=${knife.id}, reviewId=${review.id})}" method="post">
-                    <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот отзыв?')">Удалить</button>
+                    <button type="submit" class="btn-action" onclick="return confirm('Вы уверены, что хотите удалить этот отзыв?')">
+                        Удалить
+                    </button>
                 </form>
             </li>
         </ul>
         <p th:if="${reviews.isEmpty()}">Отзывов пока нет. Будьте первым, оставившим отзыв!</p>
     </div>
-    <form th:action="@{/knives/details/{id}/addReview(id=${knife.id})}" th:object="${newReview}" method="post">
+
+    <!-- Форма добавления отзыва -->
+    <form th:action="@{/knives/details/{id}/addReview(id=${knife.id})}" th:object="${newReview}" method="post" class="review-form">
         <label>Ваш отзыв:</label>
         <textarea th:field="*{reviewText}" required></textarea>
-        <button type="submit">Оставить отзыв</button>
+        <button type="submit" class="btn-action">Оставить отзыв</button>
     </form>
-    <a href="/knives" class="btn">Назад к списку ножей</a>
+
+    <div class="additional-actions">
+        <a href="/knives" class="btn">Назад к списку ножей</a>
+    </div>
 </div>
 </body>
 </html>

@@ -4,11 +4,23 @@ DROP TABLE IF EXISTS knives;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS manufacturers;
 
+
 -- Создание таблиц
 CREATE TABLE manufacturers (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
 );
+
+-- Создание таблицы заказов
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(255),
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    address VARCHAR(255),
+    status VARCHAR(50)  -- статус заказа
+);
+
 
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
